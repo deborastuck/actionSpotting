@@ -1,0 +1,29 @@
+2022-06-09 21:19:21,968 [MainThread  ] [INFO ]  Starting main function
+2022-06-09 21:19:21,968 [MainThread  ] [INFO ]  Parameters:
+2022-06-09 21:19:21,969 [MainThread  ] [INFO ]   SoccerNet_path : C:\Users\debor\Documents\Pessoal\mestrado-puc\2022.1\inf2102-projeto-final-programacao\desenvolvimento\videos\soccernet\
+2022-06-09 21:19:21,969 [MainThread  ] [INFO ]         features : ResNET_TF2.npy
+2022-06-09 21:19:21,969 [MainThread  ] [INFO ]       max_epochs : 1000
+2022-06-09 21:19:21,969 [MainThread  ] [INFO ]     load_weights : None
+2022-06-09 21:19:21,969 [MainThread  ] [INFO ]       model_name : NetVLAD++
+2022-06-09 21:19:21,970 [MainThread  ] [INFO ]        test_only : False
+2022-06-09 21:19:21,971 [MainThread  ] [INFO ]      split_train : ['train']
+2022-06-09 21:19:21,971 [MainThread  ] [INFO ]      split_valid : ['valid']
+2022-06-09 21:19:21,971 [MainThread  ] [INFO ]       split_test : ['test', 'challenge']
+2022-06-09 21:19:21,971 [MainThread  ] [INFO ]          version : 2
+2022-06-09 21:19:21,971 [MainThread  ] [INFO ]      feature_dim : None
+2022-06-09 21:19:21,971 [MainThread  ] [INFO ]  evaluation_frequency : 10
+2022-06-09 21:19:21,972 [MainThread  ] [INFO ]        framerate : 2
+2022-06-09 21:19:21,972 [MainThread  ] [INFO ]      window_size : 15
+2022-06-09 21:19:21,972 [MainThread  ] [INFO ]             pool : NetVLAD++
+2022-06-09 21:19:21,972 [MainThread  ] [INFO ]       vocab_size : 64
+2022-06-09 21:19:21,972 [MainThread  ] [INFO ]       NMS_window : 30
+2022-06-09 21:19:21,972 [MainThread  ] [INFO ]    NMS_threshold : 0.0
+2022-06-09 21:19:21,973 [MainThread  ] [INFO ]       batch_size : 256
+2022-06-09 21:19:21,973 [MainThread  ] [INFO ]               LR : 0.001
+2022-06-09 21:19:21,973 [MainThread  ] [INFO ]              LRe : 1e-06
+2022-06-09 21:19:21,973 [MainThread  ] [INFO ]         patience : 10
+2022-06-09 21:19:21,973 [MainThread  ] [INFO ]              GPU : -1
+2022-06-09 21:19:21,973 [MainThread  ] [INFO ]   max_num_worker : 4
+2022-06-09 21:19:21,974 [MainThread  ] [INFO ]             seed : 0
+2022-06-09 21:19:21,974 [MainThread  ] [INFO ]         loglevel : INFO
+2022-06-09 21:19:21,975 [MainThread  ] [INFO ]  Checking/Download features and labels locally
