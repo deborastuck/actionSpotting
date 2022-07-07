@@ -25,6 +25,8 @@ class Model(nn.Module):
         self.framerate = framerate
         self.pool = pool
         self.vlad_k = vocab_size
+
+        print('Window size frame:', self.window_size_frame)
         
         # are feature alread PCA'ed?
         if not self.input_size == 512:   
@@ -78,6 +80,27 @@ class Model(nn.Module):
                                             add_batch_norm=True)
             self.fc = nn.Linear(input_size*self.vlad_k, self.num_classes+1)
 
+
+        elif self.pool == 'ATTENTION':
+            self.attention = nn.MultiheadAttention(embed_dim=input_size, num_heads=8, batch_first=True)
+            self.pool_layer = nn.AvgPool1d(self.window_size_frame, stride=1)
+            self.fc = nn.Linear(input_size, self.num_classes+1)
+
+        elif self.pool == 'ATTENTION_2':
+            # Attention Layer
+            # Linear
+            # Pooling
+            # Attention Layer  
+            # Pooling Layer 
+            self.attention = nn.MultiheadAttention(embed_dim=input_size, num_heads=8,
+             batch_first=True)
+            self.linear = nn.Linear(input_size, input_size)
+            self.pool_layer = nn.AvgPool1d(self.window_size_frame, stride=1)
+            self.attention_2 = nn.MultiheadAttention(embed_dim=input_size, num_heads=8,
+             batch_first=True)
+            self.fc = nn.Linear(input_size, self.num_classes+1)
+            
+
         self.drop = nn.Dropout(p=0.4)
         self.sigm = nn.Sigmoid()
 
@@ -101,6 +124,7 @@ class Model(nn.Module):
             inputs = self.feature_extractor(inputs)
             inputs = inputs.reshape(BS, FR, -1)
 
+        # Aqui acontece a distinção do pooling
         # Temporal pooling operation
         if self.pool == "MAX" or self.pool == "AVG":
             inputs_pooled = self.pool_layer(inputs.permute((0, 2, 1))).squeeze(-1)
@@ -123,9 +147,29 @@ class Model(nn.Module):
             inputs_after_pooled = self.pool_layer_after(inputs[:, nb_frames_50:, :])
             inputs_pooled = torch.cat((inputs_before_pooled, inputs_after_pooled), dim=1)
 
+        # faria sentido implementar um attention++?
+        # acredito que a camada de atenção ja tenha
+        # um aspecto temporal embutido
+        elif self.pool == "ATTENTION":
+            # The pytorch class returns the output states (same shape as input)
+            #  and the weights used in the attention process.
+            # print(inputs.shape)
+            # selfattention - key, query and value are the same
+            inputs_pooled, _ = self.attention(inputs, inputs, inputs)
+            inputs_pooled = self.pool_layer(inputs.permute((0, 2, 1))).squeeze(-1)
+            # print(type(inputs_pooled))
+            # print(inputs_pooled.shape)
+
+        elif self.pool == "ATTENTION_2":
+            inputs_pooled, _ = self.attention(inputs, inputs, inputs)
+            inputs_pooled = self.linear(inputs_pooled)
+            inputs_pooled = self.pool_layer(inputs.permute((0, 2, 1))).squeeze(-1)
+            inputs_pooled, _ = self.attention_2(inputs_pooled, inputs_pooled, inputs_pooled)
 
         # Extra FC layer with dropout and sigmoid activation
+        # print('Input: ', inputs_pooled.shape) 
         output = self.sigm(self.fc(self.drop(inputs_pooled)))
+        # print('Output: ', output.shape)
 
         return output
 
